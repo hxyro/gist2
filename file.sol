@@ -51,7 +51,7 @@ contract PropertyContract{
     function createProperty(string calldata details, uint256 price) autoIncrementId external returns(uint256){
         Property memory newProperty = Property({
             id: ID,
-            propertyOwner: contractOwner,
+            propertyOwner: msg.sender,
             Price: price,
             Status: propertyStatus.Created,
             Details: details,
@@ -68,5 +68,15 @@ contract PropertyContract{
         currentProperty[Id].UpdatedAt = block.timestamp; 
         propertyHistory[ID].push(currentProperty[Id]);
     }
+
+    function approveProperty() private {}
+    function rejectProperty() private {}
+    function deleteProperty() private {}
+    function bidOnProperty() private {}
+
+
+    function getProperty() private {}
+    function getPropertyStatus() private {}
+    function getPropertyHistory() private {}
 
 }
