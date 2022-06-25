@@ -101,12 +101,12 @@ contract PropertyContract{
     // only the Owner of the contract can approve the property status
     // Approved property can be re-approved. 
     // I can use the "require" statement to check if the property is already approved, but that would just be a waste of gas(same for rejectProperty() function)
-    function approveProperty(uint256 Id) onlyContractOwner updateProperty(Id) external{
+    function approveProperty(uint256 Id) isPropertyExist(Id) onlyContractOwner updateProperty(Id) external{
         currentProperty[Id].Status = propertyStatus.Approved;
     }
     // only the Owner of the contract can reject the property status
     // I am not sure about it, if the property has been rejected so it can be tradable or not and users can get their refund
-    function rejectProperty(uint256 Id) onlyContractOwner updateProperty(Id) external {
+    function rejectProperty(uint256 Id) isPropertyExist(Id) onlyContractOwner updateProperty(Id) external {
         currentProperty[Id].Status = propertyStatus.Rejected;
         
         // not sure about the following block
@@ -122,7 +122,7 @@ contract PropertyContract{
         // }
     }
     // only the Owner of the property can delete the property
-    function deleteProperty(uint256 Id) onlyOwner(Id) external {
+    function deleteProperty(uint256 Id) isPropertyExist(Id) onlyOwner(Id) external {
         delete propertyHistory[Id];
         delete currentProperty[Id];
 
@@ -151,7 +151,7 @@ contract PropertyContract{
     }
     //only those properties are available for sale on which users have bid on
     //only the Owner of the property can sell the property
-    function sellProperty(uint256 Id) onlyOwner(Id) isPropertyExist(Id) external {
+    function sellProperty(uint256 Id) isPropertyExist(Id) onlyOwner(Id) external {
         uint256 biddingAmount = bidder[Id][maxBid[Id]];
         require(biddingAmount > 0,"no bids yet");
         
